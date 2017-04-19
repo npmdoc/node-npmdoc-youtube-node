@@ -61,12 +61,428 @@
 
     <li class="apidocModuleLi"><a href="#apidoc.module.youtube-node">module youtube-node</a><ol>
 
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.element.youtube-node.youtube-node">
+            function <span class="apidocSignatureSpan"></span>youtube-node
+            <span class="apidocSignatureSpan">()</span>
+            </a>
+
+        </li>
+
+        <li>
+
+            <span class="apidocSignatureSpan">object <span class="apidocSignatureSpan">youtube-node.</span>cli</span>
+
+        </li>
+
+    </ol></li>
+
+    <li class="apidocModuleLi"><a href="#apidoc.module.youtube-node.cli">module youtube-node.cli</a><ol>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.element.youtube-node.cli.error">
+            function <span class="apidocSignatureSpan">youtube-node.cli.</span>error
+            <span class="apidocSignatureSpan">(param)</span>
+            </a>
+
+        </li>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.element.youtube-node.cli.id">
+            function <span class="apidocSignatureSpan">youtube-node.cli.</span>id
+            <span class="apidocSignatureSpan">()</span>
+            </a>
+
+        </li>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.element.youtube-node.cli.related">
+            function <span class="apidocSignatureSpan">youtube-node.cli.</span>related
+            <span class="apidocSignatureSpan">()</span>
+            </a>
+
+        </li>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.element.youtube-node.cli.search">
+            function <span class="apidocSignatureSpan">youtube-node.cli.</span>search
+            <span class="apidocSignatureSpan">()</span>
+            </a>
+
+        </li>
+
     </ol></li>
 
 </ol></div>
 
 <div class="apidocSectionDiv">
 <h1><a href="#apidoc.module.youtube-node" id="apidoc.module.youtube-node">module youtube-node</a></h1>
+
+
+    <h2>
+        <a href="#apidoc.element.youtube-node.youtube-node" id="apidoc.element.youtube-node.youtube-node">
+        function <span class="apidocSignatureSpan"></span>youtube-node
+        <span class="apidocSignatureSpan">()</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">youtube-node = function () {
+
+  var self = this;
+
+<span class="apidocCodeCommentSpan">  /**
+  * API v3 Url
+  * @type {string}
+  */
+</span>  self.url = &#x27;https://www.googleapis.com/youtube/v3/&#x27;;
+
+  /**
+  * params
+  * https://developers.google.com/youtube/v3/docs/search/list
+  * @type {Object}
+  */
+  self.params = {};
+
+  self.parts = [];
+
+  /**
+  * Set private key to class
+  * @param {string} key
+  */
+  self.setKey = function(key) {
+    self.addParam(&#x27;key&#x27;, key);
+  };
+
+  /**
+  *
+  * @param {string} name
+  */
+  self.addPart = function(name) {
+    self.parts.push(name);
+  };
+
+  /**
+  *
+  * Optional parameters
+  * https://developers.google.com/youtube/v3/docs/search/list
+  *
+  * @param {string} key
+  * @param {string} value
+  */
+  self.addParam = function(key, value) {
+    self.params[key] = value;
+  };
+
+  /**
+  *
+  * @param {string} path
+  * @returns {string}
+  */
+  self.getUrl = function(path) {
+    return self.url + path + &#x27;?&#x27; + queryString.stringify(self.params);
+  };
+
+  /**
+  *
+  * @returns {string}
+  */
+  self.getParts = function() {
+    return self.parts.join(&#x27;,&#x27;);
+  };
+
+  /**
+  * Simple http request
+  * @param {string} url
+  * @param {string} callback
+  */
+  self.request = function(url, callback) {
+    request(url, function(error, response, body) {
+      if (error) {
+        callback(error);
+      }
+      else {
+        var data = JSON.parse(body);
+        if (response.statusCode == 200) {
+          callback(null, data);
+        }
+        else {
+          callback(data.error);
+        }
+      }
+    });
+  };
+
+  /**
+  * Return error object
+  * @param {string} message
+  */
+  self.newError = function(message) {
+    return {
+      error : {
+        message: message
+      }
+    };
+  };
+
+  /**
+  * Validate params
+  */
+  self.validate = function() {
+    if (!self.params.key) {
+      return self.newError(&#x27;Please set a key using setKey method. Get an key in https://console.developers.google.com&#x27;);
+    }
+    else {
+      return null;
+    }
+  };
+
+  /**
+  * Initialize parts
+  */
+  self.clearParts = function() {
+    self.parts = [];
+  };
+
+  /**
+  * Video data from ID
+  * @param {string} id
+  * @param {function} callback
+  */
+  self.getById = function(id, callback) {
+    var validate = self.validate();
+
+    if (validate !== null) {
+      callback(validate);
+    }
+    else {
+      self.clearParts();
+
+      self.addPart(&#x27;snippet&#x27;);
+      self.addPart(&#x27;contentDetails&#x27;);
+      self.addPart(&#x27;statistics&#x27;);
+      self.addPart(&#x27;status&#x27;);
+
+      self.addParam(&#x27;part&#x27;, self.getParts());
+      self.addParam(&#x27;id&#x27;, id);
+
+      self.request(self.getUrl(&#x27;videos&#x27;), callback);
+    }
+  };
+
+  /**
+  * Playlists data from Playlist Id
+  * @param {string} id
+  * @param {function} callback
+  * https://developers.google.com/youtube/v3/docs/playlists/list
+  */
+  self.getPlayListsById = function(id, callback) {
+    var validate = self.validate();
+
+    if (validate !== null) {
+      callback(validate);
+    }
+    else {
+      self.clearParts();
+
+      self.addPart(&#x27;snippet&#x27;);
+      self.addPart(&#x27;contentDetails&#x27;);
+      self.addPart(&#x27;status&#x27;);
+      self.addPart(&#x27;player&#x27;);
+      self.addPart(&#x27;id&#x27;);
+
+      self.addParam(&#x27;part&#x27;, self.getParts());
+      self.addParam(&#x27;id&#x27;, id);
+
+      self.request(self.getUrl(&#x27;playlists&#x27;), callback);
+    }
+  };
+
+  /**
+  * Playlists data from Playlist Id
+  * @param {string} id
+  * @param {function} callback
+  * https://developers.google.com/youtube/v3/docs/playlistItems/list
+  */
+  self.getPlayListsItemsById = function(id, callback) {
+    var validate = self.validate();
+
+    if (validate !== null) {
+      callback(validate);
+    }
+    else {
+      self.clearParts();
+
+      self.addPart(&#x27;contentDetails&#x27;);
+      self.addPart(&#x27;id&#x27;);
+      self.addPart(&#x27;snippet&#x27;);
+      self.addPart(&#x27;status&#x27;);
+
+      self.addParam(&#x27;part&#x27;, self.getParts());
+      self.addParam(&#x27;playlistId&#x27;, id);
+
+      self.request(self.getUrl(&#x27;playlistItems&#x27;), callback);
+    }
+  };
+
+  /**
+  * Videos data from query
+  * @param {string} query
+  * @param {int} maxResults
+  * @param {function} callback
+  */
+  self.search = function(query, maxResults, callback) {
+    var validate = self.validate();
+
+    if (validate !== null) { ...</pre></li>
+    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    </ul>
+
+
+
+
+</div>
+
+<div class="apidocSectionDiv">
+<h1><a href="#apidoc.module.youtube-node.cli" id="apidoc.module.youtube-node.cli">module youtube-node.cli</a></h1>
+
+
+    <h2>
+        <a href="#apidoc.element.youtube-node.cli.error" id="apidoc.element.youtube-node.cli.error">
+        function <span class="apidocSignatureSpan">youtube-node.cli.</span>error
+        <span class="apidocSignatureSpan">(param)</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">error = function (param) {
+  var message = &#x27;&#x27;;
+  switch (param){
+    case 0:
+      message = &#x27;Required to enter a command.&#x27;;
+    break;
+    case 1:
+      message = &#x27;The command you entered does not exist.&#x27;;
+    break;
+  }
+  console.log(colors.red(message));
+}</pre></li>
+    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    </ul>
+
+
+
+    <h2>
+        <a href="#apidoc.element.youtube-node.cli.id" id="apidoc.element.youtube-node.cli.id">
+        function <span class="apidocSignatureSpan">youtube-node.cli.</span>id
+        <span class="apidocSignatureSpan">()</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">id = function () {
+  prompt.start();
+  prompt.get([&#x27;key&#x27;, &#x27;id&#x27;], function(err, result) {
+    youTube.setKey(result.key);
+    youTube.getById(result.id, function(error, result) {
+      if (error) {
+        console.log(error);
+      }
+      else {
+        console.log(JSON.stringify(result, null, 2));
+      }
+    });
+  });
+}</pre></li>
+    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    </ul>
+
+
+
+    <h2>
+        <a href="#apidoc.element.youtube-node.cli.related" id="apidoc.element.youtube-node.cli.related">
+        function <span class="apidocSignatureSpan">youtube-node.cli.</span>related
+        <span class="apidocSignatureSpan">()</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">related = function () {
+  prompt.start();
+  prompt.get([&#x27;key&#x27;, &#x27;id&#x27;, &#x27;maxResults&#x27;], function(err, result) {
+    youTube.setKey(result.key);
+    youTube.related(result.id, result.maxResults, function(error, result) {
+      if (error) {
+        console.log(error);
+      }
+      else {
+        console.log(JSON.stringify(result, null, 2));
+      }
+    });
+  });
+}</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+
+var YouTube = require(&#x27;youtube-node&#x27;);
+
+var youTube = new YouTube();
+
+youTube.setKey(&#x27;AIzaSyB1OOSpTREs85WUMvIgJvLTZKye4BVsoFU&#x27;);
+
+youTube.<span class="apidocCodeKeywordSpan">related</span>(&#x27;hafhSaP_Nh4&#x27;, 2, function(error, result) {
+  if (error) {
+    console.log(error);
+  }
+  else {
+    console.log(JSON.stringify(result, null, 2));
+  }
+});
+...</pre></li>
+    </ul>
+
+
+
+    <h2>
+        <a href="#apidoc.element.youtube-node.cli.search" id="apidoc.element.youtube-node.cli.search">
+        function <span class="apidocSignatureSpan">youtube-node.cli.</span>search
+        <span class="apidocSignatureSpan">()</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">search = function () {
+  prompt.start();
+  prompt.get([&#x27;key&#x27;, &#x27;query&#x27;, &#x27;maxResults&#x27;], function(err, result) {
+    youTube.setKey(result.key);
+    youTube.search(result.query, result.maxResults, function(error, result) {
+      if (error) {
+        console.log(error);
+      }
+      else {
+        console.log(JSON.stringify(result, null, 2));
+      }
+    });
+  });
+}</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+#### Example search (search term, num results, results) return object
+var YouTube = require(&#x27;youtube-node&#x27;);
+
+var youTube = new YouTube();
+
+youTube.setKey(&#x27;AIzaSyB1OOSpTREs85WUMvIgJvLTZKye4BVsoFU&#x27;);
+
+youTube.<span class="apidocCodeKeywordSpan">search</span>(&#x27;World War z Trailer&#x27;, 2, function(error, result) {
+  if (error) {
+    console.log(error);
+  }
+  else {
+    console.log(JSON.stringify(result, null, 2));
+  }
+});
+...</pre></li>
+    </ul>
+
 
 </div>
 
