@@ -1,9 +1,14 @@
-# api documentation for  [youtube-node (v1.3.0)](https://github.com/paulomcnally/youtube-node#readme)  [![npm package](https://img.shields.io/npm/v/npmdoc-youtube-node.svg?style=flat-square)](https://www.npmjs.org/package/npmdoc-youtube-node) [![travis-ci.org build-status](https://api.travis-ci.org/npmdoc/node-npmdoc-youtube-node.svg)](https://travis-ci.org/npmdoc/node-npmdoc-youtube-node)
+# npmdoc-youtube-node
+
+#### api documentation for  [youtube-node (v1.3.0)](https://github.com/paulomcnally/youtube-node#readme)  [![npm package](https://img.shields.io/npm/v/npmdoc-youtube-node.svg?style=flat-square)](https://www.npmjs.org/package/npmdoc-youtube-node) [![travis-ci.org build-status](https://api.travis-ci.org/npmdoc/node-npmdoc-youtube-node.svg)](https://travis-ci.org/npmdoc/node-npmdoc-youtube-node)
+
 #### Youtube API v3 client for nodeJS
 
-[![NPM](https://nodei.co/npm/youtube-node.png?downloads=true)](https://www.npmjs.com/package/youtube-node)
+[![NPM](https://nodei.co/npm/youtube-node.png?downloads=true&downloadRank=true&stars=true)](https://www.npmjs.com/package/youtube-node)
 
-[![apidoc](https://npmdoc.github.io/node-npmdoc-youtube-node/build/screenCapture.buildNpmdoc.browser._2Fhome_2Ftravis_2Fbuild_2Fnpmdoc_2Fnode-npmdoc-youtube-node_2Ftmp_2Fbuild_2Fapidoc.html.png)](https://npmdoc.github.io/node-npmdoc-youtube-node/build/apidoc.html)
+- [https://npmdoc.github.io/node-npmdoc-youtube-node/build/apidoc.html](https://npmdoc.github.io/node-npmdoc-youtube-node/build/apidoc.html)
+
+[![apidoc](https://npmdoc.github.io/node-npmdoc-youtube-node/build/screenCapture.buildCi.browser.%252Ftmp%252Fbuild%252Fapidoc.html.png)](https://npmdoc.github.io/node-npmdoc-youtube-node/build/apidoc.html)
 
 ![npmPackageListing](https://npmdoc.github.io/node-npmdoc-youtube-node/build/screenCapture.npmPackageListing.svg)
 
@@ -17,15 +22,13 @@
 
 {
     "author": {
-        "name": "Paulo McNally",
-        "email": "paulomcnally@gmail.com"
+        "name": "Paulo McNally"
     },
     "bin": {
         "youtube": "./bin/youtube"
     },
     "bugs": {
-        "url": "https://github.com/paulomcnally/youtube-node/issues/new",
-        "email": "paulomcnally@gmail.com"
+        "url": "https://github.com/paulomcnally/youtube-node/issues/new"
     },
     "dependencies": {
         "colors": "1.0.3",
@@ -53,13 +56,11 @@
     "main": "./index.js",
     "maintainers": [
         {
-            "name": "paulomcnally",
-            "email": "paulomcnally@gmail.com"
+            "name": "paulomcnally"
         }
     ],
     "name": "youtube-node",
     "optionalDependencies": {},
-    "readme": "ERROR: No README data found!",
     "repository": {
         "type": "git",
         "url": "git://github.com/paulomcnally/youtube-node.git"
@@ -68,16 +69,6 @@
     "version": "1.3.0"
 }
 ```
-
-
-
-# <a name="apidoc.tableOfContents"></a>[table of contents](#apidoc.tableOfContents)
-
-#### [module youtube-node](#apidoc.module.youtube-node)
-
-
-
-# <a name="apidoc.module.youtube-node"></a>[module youtube-node](#apidoc.module.youtube-node)
 
 
 
